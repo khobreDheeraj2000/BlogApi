@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,42 +24,38 @@ public class AuthController {
 	@Autowired
 	private JwtTokenHelper jwtTokenHelper;
 	@Autowired
-	private UserDetailsService userDetailsService ;
-	 @Autowired
-	 private AuthenticationManager authenticationManager;
-	 
-	 private static final Logger logger = Logger.getLogger(AuthController.class.getName());
-	 
-	 @GetMapping("/login")
-	 public ResponseEntity<String> demo(){
-		 String str = "work testing";
-		 return new ResponseEntity<>(str,HttpStatus.OK);
-	 }
-	
+	private UserDetailsService userDetailsService;
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	private static final Logger logger = Logger.getLogger(AuthController.class.getName());
+
+	@GetMapping("/test")
+	public ResponseEntity<String> demo() {
+		String str = "work testing";
+		return new ResponseEntity<>(str, HttpStatus.OK);
+	}
+
 	@PostMapping("/login")
 	public ResponseEntity<JwtAuthResponse> createToken(@RequestBody JwtAuthRequest request) throws Exception {
-		logger.info("Doing something...");
-		System.out.println(request.toString());
-		this.authenticate(request.getUsername(),request.getPassword());
-		System.out.println(request.getUsername()  + "      & " + request.getPassword() );
+		logger.info("mapping is working...");
+		this.authenticate(request.getUsername(), request.getPassword());
 		UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
-		System.out.println(userDetails.toString());
 		String token = this.jwtTokenHelper.generateToken(userDetails);
-		System.out.println(token);
 		JwtAuthResponse response = new JwtAuthResponse();
 		response.setToken(token);
-		return new ResponseEntity<JwtAuthResponse>(response,HttpStatus.OK);
+		return new ResponseEntity<JwtAuthResponse>(response, HttpStatus.OK);
 	}
 
 	private void authenticate(String userName, String password) throws Exception {
-		
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userName,password);
-		try{
+
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userName,
+				password);
+		try {
 			this.authenticationManager.authenticate(authenticationToken);
-			System.out.println("This is authenticationToken : " + authenticationToken);
-			}
-		catch(BadCredentialsException e) {
-			System.out.println("invalid details");
+
+		} catch (BadCredentialsException e) {
+
 			throw new Exception("Invalid userName or password");
 		}
 	}
