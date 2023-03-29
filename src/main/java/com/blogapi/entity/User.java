@@ -17,6 +17,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -41,6 +42,7 @@ public class User implements UserDetails{
 	private List<Post> posts = new ArrayList<>();
 	
 	@ManyToMany(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
+	@JoinTable(name = "user_rolee")
 	private Set<Role> roles = new HashSet<>();
 
 	@Override
@@ -78,4 +80,11 @@ public class User implements UserDetails{
 		// TODO Auto-generated method stub
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", about=" + about
+				+ ", posts=" + posts + ", roles=" + roles + "]";
+	}
+	
 }
