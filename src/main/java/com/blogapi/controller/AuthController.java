@@ -14,10 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
+
+import com.blogapi.dto.UserDto;
 import com.blogapi.payload.JwtAuthRequest;
 import com.blogapi.payload.JwtAuthResponse;
 import com.blogapi.security.JwtTokenHelper;
+import com.blogapi.services.UserService;
 
 @RestController
 public class AuthController {
@@ -27,14 +32,16 @@ public class AuthController {
 	private UserDetailsService userDetailsService;
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	@Autowired
+	UserService userService;
 
 	private static final Logger logger = Logger.getLogger(AuthController.class.getName());
 
-	@GetMapping("/test")
-	public ResponseEntity<String> demo() {
-		String str = "work testing";
-		return new ResponseEntity<>(str, HttpStatus.OK);
-	}
+//	@GetMapping("/test")
+//	public ResponseEntity<String> demo() {
+//		String str = "work testing";
+//		return new ResponseEntity<>(str, HttpStatus.OK);
+//	}
 
 	@PostMapping("/login")
 	public ResponseEntity<JwtAuthResponse> createToken(@RequestBody JwtAuthRequest request) throws Exception {
@@ -56,7 +63,13 @@ public class AuthController {
 
 		} catch (BadCredentialsException e) {
 
-			throw new Exception("Invalid userName or password");
+			throw e ;
 		}
+	}
+	
+	@PostMapping("/register")
+	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto) {
+		UserDto userDto1 = this.userService.registerUser(userDto);
+		return new ResponseEntity<>(userDto1,HttpStatus.OK);
 	}
 }

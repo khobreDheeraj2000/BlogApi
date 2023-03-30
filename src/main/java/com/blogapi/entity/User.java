@@ -42,7 +42,7 @@ public class User implements UserDetails{
 	private List<Post> posts = new ArrayList<>();
 	
 	@ManyToMany(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
-	@JoinTable(name = "user_rolee")
+	@JoinTable(name = "user_role")
 	private Set<Role> roles = new HashSet<>();
 
 	@Override

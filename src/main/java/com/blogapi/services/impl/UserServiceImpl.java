@@ -3,19 +3,31 @@ package com.blogapi.services.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.blogapi.dto.UserDto;
 import com.blogapi.entity.User;
+import com.blogapi.repository.RoleRepository;
 import com.blogapi.repository.UserRepository;
 import com.blogapi.services.UserService;
 
 @Service
 public class UserServiceImpl implements UserService{
+	
+	@Autowired
+	ModelMapper modelMapper;
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	RoleRepository roleRepository;
+	
+	@Autowired
+	BCryptPasswordEncoder bcryptPasswordEncoder ;
 	
 	@Override
 	public UserDto createUser(UserDto userDto) {
@@ -79,6 +91,16 @@ public class UserServiceImpl implements UserService{
 		 user.setPassword(userDto.getPassword());
 		
 		return user;
+	}
+
+	@Override
+	public UserDto registerUser(UserDto userDto) {
+		User user = this.modelMapper.map(userDto,User.class);
+		user.setPassword(this.bcryptPasswordEncoder.encode(user.getPassword()));
+		user.getRoles().add(this.roleRepository.findById(2).get());
+		User registeredUser = this.userRepository.save(user);
+		UserDto registeredUserDto = this.modelMapper.map(registeredUser, UserDto.class);
+		return registeredUserDto;
 	}
 
 }
