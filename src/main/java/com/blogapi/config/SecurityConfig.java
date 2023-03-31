@@ -1,7 +1,6 @@
 package com.blogapi.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,25 +16,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.blogapi.security.CustomUserDetailService;
 import com.blogapi.security.JwtAuthenticationEntryPoint;
 import com.blogapi.security.JwtAuthenticationFilter;
-
+// spring version 3.0.4
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig{
-
+	
+	public static final String[] PUBLIC_URLS = {
+			"/v3/api-docs"
+			,"/login","/register"
+			,"/v2/api-docs","/swagger-resources/**"
+			,"/swagger-ui/**","/webjars/**"
+			};
 	@Autowired
 	CustomUserDetailService customUserDetailService;
-	
-
-	
 	@Autowired
 	JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-	
 	@Autowired
 	JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -43,8 +45,8 @@ public class SecurityConfig{
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 		http.csrf()
 		.disable()
-		.authorizeHttpRequests().requestMatchers("/login").permitAll().requestMatchers("/register").permitAll()
-		.requestMatchers(HttpMethod.GET).permitAll()
+		.authorizeHttpRequests().requestMatchers(PUBLIC_URLS).permitAll()
+		.requestMatchers(HttpMethod.GET).permitAll().requestMatchers("/**").permitAll()
 		.anyRequest().authenticated()
 		.and()
 		.exceptionHandling()
