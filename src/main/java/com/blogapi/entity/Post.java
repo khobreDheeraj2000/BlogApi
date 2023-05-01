@@ -34,7 +34,7 @@ private String postTitle;
 private String postContent;
 
 @Column(name="date")
-private Date datePostAdded;
+private String datePostAdded;
 
 @Column(name="image")
 private String postImageName;

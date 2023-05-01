@@ -59,7 +59,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public PostDto createPost(PostDto postDto,int userId, int categoryId) {
 			Post post = this.modelMapper.map(postDto, Post.class);
-			post.setDatePostAdded(new Date());
+			//post.setDatePostAdded(new Date());
 			Category category = this.categoryRepository.findById(categoryId).orElseThrow();
 			post.setCategory(category);
 			User user = this.userRepository.findById(userId).orElseThrow();

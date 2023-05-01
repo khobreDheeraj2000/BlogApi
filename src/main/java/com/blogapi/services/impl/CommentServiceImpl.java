@@ -19,6 +19,7 @@ public class CommentServiceImpl implements CommentService {
 	PostRepository postRepository;
 	@Autowired
 	ModelMapper modelMapper = new ModelMapper();
+	
 	@Override
 	public CommentDto createComment(CommentDto commentDto, int postId) {
 		Post post = this.postRepository.findById(postId).orElseThrow();
