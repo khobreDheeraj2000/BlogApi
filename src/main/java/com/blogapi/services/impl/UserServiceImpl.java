@@ -1,6 +1,7 @@
 package com.blogapi.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.blogapi.dto.UserDto;
 import com.blogapi.entity.User;
+import com.blogapi.exception.ResourceNotFoundException;
 import com.blogapi.repository.RoleRepository;
 import com.blogapi.repository.UserRepository;
 import com.blogapi.services.UserService;
@@ -39,7 +41,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDto updateUser(UserDto userDto, Integer user_id) {
-		User user = userRepository.findById(user_id).orElseThrow();
+		User user = userRepository.findById(user_id).orElseThrow( ()-> new ResourceNotFoundException("user not found"));
 		 user.setName(userDto.getName());
 		 user.setEmail(userDto.getEmail());
 		 user.setAbout(userDto.getAbout());
@@ -51,7 +53,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDto getUserById(Integer id) {
-		User user = this.userRepository.findById(id).orElseThrow();
+		User user = this.userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("user not found"));
 		
 		return this.userToDto(user);
 	}
@@ -65,7 +67,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void deleteUser(Integer userId) {
-		User user = this.userRepository.findById(userId).orElseThrow();
+		User user = this.userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("user not found"));
 		this.userRepository.delete(user);
 	}
 	
@@ -96,6 +98,9 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserDto registerUser(UserDto userDto) {
 		User user = this.modelMapper.map(userDto,User.class);
+//		String email = user.getEmail();
+//		Optional<User> user1 = this.userRepository.findByEmail(email);
+//		if(user1 != null){throw new ResourceNotFoundException("user not found");}
 		user.setPassword(this.bcryptPasswordEncoder.encode(user.getPassword()));
 		user.getRoles().add(this.roleRepository.findById(2).get());
 		User registeredUser = this.userRepository.save(user);

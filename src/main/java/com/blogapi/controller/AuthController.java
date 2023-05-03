@@ -24,6 +24,8 @@ import com.blogapi.payload.JwtAuthResponse;
 import com.blogapi.security.JwtTokenHelper;
 import com.blogapi.services.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class AuthController {
 	@Autowired
@@ -44,7 +46,7 @@ public class AuthController {
 //	}
 
 	@PostMapping("/login")
-	public ResponseEntity<JwtAuthResponse> createToken(@RequestBody JwtAuthRequest request) throws Exception {
+	public ResponseEntity<JwtAuthResponse> createToken(@Valid @RequestBody JwtAuthRequest request) throws Exception {
 		logger.info("mapping is working...");
 		this.authenticate(request.getUsername(), request.getPassword());
 		UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
@@ -68,7 +70,7 @@ public class AuthController {
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto) {
+	public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDto) {
 		UserDto userDto1 = this.userService.registerUser(userDto);
 		return new ResponseEntity<>(userDto1,HttpStatus.OK);
 	}
