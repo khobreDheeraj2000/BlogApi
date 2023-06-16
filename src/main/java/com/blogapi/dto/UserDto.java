@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 public class UserDto {
 
-	private int id;
+	
 	@NotNull @NotEmpty @Size(min=4 )
 	private String name;
 	@Email

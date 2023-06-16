@@ -1,6 +1,7 @@
 package com.blogapi.controller;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import com.blogapi.repository.PostRepository;
 import com.blogapi.services.PostService;
 
 @RestController
-//@RequestMapping("/posts")
 public class PostController {
 
 	@Autowired
@@ -60,6 +60,7 @@ public class PostController {
 			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
 			@RequestParam(value = "sortDirection", defaultValue = "asc", required = false) String sortDirection) {
 		PostResponse postResponse = this.postService.getAllPosts(pageNumber, pageSize,sortBy,sortDirection);
+		System.out.print(postResponse + "postController Called !!");
 		return new ResponseEntity<>(postResponse, HttpStatus.OK);
 	}
 

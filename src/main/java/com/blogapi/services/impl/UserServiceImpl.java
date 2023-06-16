@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService{
 	public UserDto userToDto(User user) {
 		UserDto userDto = new UserDto();
 		
-		userDto.setId(user.getId());
+		
 		userDto.setName(user.getName());
 		userDto.setEmail(user.getEmail());
 		userDto.setAbout(user.getAbout());
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService{
 	public User dtoToUser(UserDto userDto) {
 		User user= new User();
 		
-		 user.setId(userDto.getId());
+		
 		 user.setName(userDto.getName());
 		 user.setEmail(userDto.getEmail());
 		 user.setAbout(userDto.getAbout());

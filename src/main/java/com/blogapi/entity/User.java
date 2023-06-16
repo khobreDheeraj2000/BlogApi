@@ -35,12 +35,12 @@ import lombok.Setter;
 @Setter
 public class User implements UserDetails{
 	
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id //@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	@NotNull
 	@NotBlank
 	@Size(min = 2, max = 200, message = "  name should be between min 2 char and maximum 200 char")
-	@Column(name="user_id",nullable=false,length=100)
+	@Column(name="name",nullable=false,length=100)
 	private String name;
 	@Column(unique=true)
 	@Email

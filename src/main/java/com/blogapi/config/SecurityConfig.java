@@ -51,7 +51,7 @@ public class SecurityConfig{
 		.disable()
 		.authorizeHttpRequests().requestMatchers(PUBLIC_URLS).permitAll()
 	.requestMatchers(HttpMethod.GET).permitAll()
-	.requestMatchers("/**").permitAll()
+	//.requestMatchers("/**").permitAll()
 		.anyRequest().authenticated()
 		.and()
 		.exceptionHandling()
@@ -71,26 +71,26 @@ public class SecurityConfig{
 	        return new BCryptPasswordEncoder();
 	    }
 	 
-	 @Bean 
-	 public FilterRegistrationBean corsFilter() {
-		  
-		 UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); 
-		 CorsConfiguration corsConfiguration = new CorsConfiguration();
-		 corsConfiguration.setAllowCredentials(true);
-		 corsConfiguration.addAllowedOriginPattern("*");
-		 corsConfiguration.addAllowedHeader("Authorization");
-		 corsConfiguration.addAllowedHeader("Content-Type");
-		 corsConfiguration.addAllowedHeader("Accept");
-		 corsConfiguration.addAllowedMethod("POST");
-		 corsConfiguration.addAllowedMethod("GET");
-		 corsConfiguration.addAllowedMethod("DELETE");
-		 corsConfiguration.addAllowedMethod("PUT");
-		 corsConfiguration.addAllowedMethod("OPTIONS");
-		 corsConfiguration.setMaxAge(3600L);
-		 source.registerCorsConfiguration("/**", corsConfiguration);
-		 FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter((CorsConfigurationSource) source));
-		 return bean ;
-	 }
+//	 @Bean 
+//	 public FilterRegistrationBean corsFilter() {
+//		  
+//		 UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); 
+//		 CorsConfiguration corsConfiguration = new CorsConfiguration();
+//		 corsConfiguration.setAllowCredentials(true);
+//		 corsConfiguration.addAllowedOriginPattern("*");
+//		 corsConfiguration.addAllowedHeader("Authorization");
+//		 corsConfiguration.addAllowedHeader("Content-Type");
+//		 corsConfiguration.addAllowedHeader("Accept");
+//		 corsConfiguration.addAllowedMethod("POST");
+//		 corsConfiguration.addAllowedMethod("GET");
+//		 corsConfiguration.addAllowedMethod("DELETE");
+//		 corsConfiguration.addAllowedMethod("PUT");
+//		 corsConfiguration.addAllowedMethod("OPTIONS");
+//		 corsConfiguration.setMaxAge(3600L);
+//		 source.registerCorsConfiguration("/**", corsConfiguration);
+//		 FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter((CorsConfigurationSource) source));
+//		 return bean ;
+//	 }
 //	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //		auth.userDetailsService(this.customUserDetailService).passwordEncoder(passwordEncoder());
 //	}
@@ -108,29 +108,29 @@ public class SecurityConfig{
 		return configuration.getAuthenticationManager();
 	}
 	
-//	 @Bean
-//	    public FilterRegistrationBean coresFilter() {
-//	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//
-//	        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//	        corsConfiguration.setAllowCredentials(true);
-//	        corsConfiguration.addAllowedOriginPattern("*");
-//	        corsConfiguration.addAllowedHeader("Authorization");
-//	        corsConfiguration.addAllowedHeader("Content-Type");
-//	        corsConfiguration.addAllowedHeader("Accept");
-//	        corsConfiguration.addAllowedMethod("POST");
-//	        corsConfiguration.addAllowedMethod("GET");
-//	        corsConfiguration.addAllowedMethod("DELETE");
-//	        corsConfiguration.addAllowedMethod("PUT");
-//	        corsConfiguration.addAllowedMethod("OPTIONS");
-//	        corsConfiguration.setMaxAge(3600L);
-//
-//	        source.registerCorsConfiguration("/**", corsConfiguration);
-//
-//	        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-//
-//	        bean.setOrder(-110);
-//
-//	        return bean;
-//	    }
+	 @Bean
+	    public FilterRegistrationBean coresFilter() {
+	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+	        CorsConfiguration corsConfiguration = new CorsConfiguration();
+	        corsConfiguration.setAllowCredentials(true);
+	        corsConfiguration.addAllowedOriginPattern("*");
+	        corsConfiguration.addAllowedHeader("Authorization");
+	        corsConfiguration.addAllowedHeader("Content-Type");
+	        corsConfiguration.addAllowedHeader("Accept");
+	        corsConfiguration.addAllowedMethod("POST");
+	        corsConfiguration.addAllowedMethod("GET");
+	        corsConfiguration.addAllowedMethod("DELETE");
+	        corsConfiguration.addAllowedMethod("PUT");
+	        corsConfiguration.addAllowedMethod("OPTIONS");
+	        corsConfiguration.setMaxAge(3600L);
+
+	        source.registerCorsConfiguration("/**", corsConfiguration);
+
+	        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+
+	        bean.setOrder(-110);
+
+	        return bean;
+	    }
 }
